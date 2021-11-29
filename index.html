@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body translate="no" data-gr-ext-disabled="forever" class="vsc-initialized" data-new-gr-c-s-check-loaded="14.1033.0"
+    data-gr-ext-installed="" style="background-color: rgb(22, 160, 133); color: rgb(22, 160, 133);">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <div id="wrapper">
+        <div id="quote-box">
+            <div class="quote-text" style="opacity: 1;">
+                <i class="fa fa-quote-left"> </i><span id="text">I have learned over the years that when one’s mind is
+                    made up, this diminishes fear.</span>
+            </div>
+            <div class="quote-author" style="opacity: 1;">- <span id="author">Rosa Parks</span></div>
+            <div class="buttons">
+                <a class="button" id="tweet-quote" title="Tweet this quote!" target="_top"
+                    href="https://twitter.com/intent/tweet?hashtags=quotes&amp;related=freecodecamp&amp;text=%22I%20have%20learned%20over%20the%20years%20that%20when%20one%E2%80%99s%20mind%20is%20made%20up%2C%20this%20diminishes%20fear.%22%20Rosa%20Parks"
+                    style="background-color: rgb(22, 160, 133);">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <a class="button" id="tumblr-quote" title="Post this quote on tumblr!" target="_blank"
+                    href="https://www.tumblr.com/widgets/share/tool?posttype=quote&amp;tags=quotes,freecodecamp&amp;caption=Rosa%20Parks&amp;content=I%20have%20learned%20over%20the%20years%20that%20when%20one%E2%80%99s%20mind%20is%20made%20up%2C%20this%20diminishes%20fear.&amp;canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&amp;shareSource=tumblr_share_button"
+                    style="background-color: rgb(22, 160, 133);">
+                    <i class="fa fa-tumblr"></i>
+                </a>
+                <button class="button" id="new-quote" style="background-color: rgb(22, 160, 133);">New quote</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <script
+        src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <div id="fcc_test_suite_wrapper" style="position: relative !important; z-index: 99999 !important;"></div>
+    <script id="rendered-js">
+        const projectName = 'random-quote-machine';
+        let quotesData;
+        var colors = [
+            '#16a085',
+            '#27ae60',
+            '#2c3e50',
+            '#f39c12',
+            '#e74c3c',
+            '#9b59b6',
+            '#FB6964',
+            '#342224',
+            '#472E32',
+            '#BDBB99',
+            '#77B1A9',
+            '#73A857'];
+
+        var currentQuote = '',
+            currentAuthor = '';
+
+        function getQuotes() {
+            return $.ajax({
+                headers: {
+                    Accept: 'application/json'
+                },
+
+                url:
+                    'https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json',
+                success: function (jsonQuotes) {
+                    if (typeof jsonQuotes === 'string') {
+                        quotesData = JSON.parse(jsonQuotes);
+                        console.log('quotesData');
+                        console.log(quotesData);
+                    }
+                }
+            });
+
+        }
+        function getRandomQuote() {
+            return quotesData.quotes[
+                Math.floor(Math.random() * quotesData.quotes.length)];
+
+        }
+
+        function getQuote() {
+            let randomQuote = getRandomQuote();
+
+            currentQuote = randomQuote.quote;
+            currentAuthor = randomQuote.author;
+
+            $('.quote-text').animate({ opacity: 0 }, 500, function () {
+                $(this).animate({ opacity: 1 }, 500);
+                $('#text').text(randomQuote.quote);
+            });
+
+            $('.quote-author').animate({ opacity: 0 }, 500, function () {
+                $(this).animate({ opacity: 1 }, 500);
+                $('#author').html(randomQuote.author);
+            });
+
+            var color = Math.floor(Math.random() * colors.length);
+            $('html body').animate(
+                {
+                    backgroundColor: colors[color],
+                    color: colors[color]
+                },
+
+                1000);
+
+            $('.button').animate(
+                {
+                    backgroundColor: colors[color]
+                },
+
+                1000);
+
+        }
+        $(document).ready(function () {
+            getQuotes().then(() => {
+                getQuote();
+            });
+
+            $('#new-quote').on('click', getQuote);
+        });
+  //# sourceURL=pen.js
+    </script>
+</body>
+
+</html>
